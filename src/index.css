@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --header-height: 0px; /* Default, updated by JS */
+  --footer-height: 0px; /* Default, updated by JS */
+}
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+ 
+    --primary: 262.1 83.3% 57.8%; /* Um roxo vibrante */
+    --primary-foreground: 0 0% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 300 70% 90%; /* Um lilás suave para acentos */
+    --accent-foreground: 300 50% 10%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 262.1 83.3% 57.8%; /* Roxo para anéis de foco */
+ 
+    --radius: 0.75rem; /* Bordas mais arredondadas */
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 0 0% 98%;
+ 
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 98%;
+ 
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 98%;
+ 
+    --primary: 262.1 83.3% 57.8%; /* Roxo vibrante mantido */
+    --primary-foreground: 0 0% 98%;
+ 
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 0 0% 98%;
+ 
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --accent: 300 50% 20%; /* Lilás escuro para acentos */
+    --accent-foreground: 0 0% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+ 
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 262.1 83.3% 57.8%; /* Roxo para anéis de foco */
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif; /* Fonte mais moderna */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* Adiciona Inter via Google Fonts se não estiver localmente */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+  /* Estilos para scrollbar mais suave e moderno */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-secondary/50;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/60;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/80;
+  }
+}
+
+/* Estilos para o container principal da página */
+.page-container {
+  @apply w-full max-w-screen-xl mx-auto px-3 sm:px-4 md:px-6 flex-grow flex flex-col;
+}
+
+/* Para páginas que devem ocupar toda a altura disponível entre header e footer */
+.full-height-page {
+  @apply min-h-0 flex-grow; /* min-h-0 é importante para flex-grow funcionar corretamente em alguns cenários */
+}
+
+/* Wrapper para o conteúdo principal, considerando header e footer fixos */
+.content-wrapper {
+  padding-top: var(--header-height);
+  padding-bottom: var(--footer-height);
+  height: 100vh; /* Garante que o wrapper ocupe toda a altura da viewport */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Permite scroll apenas no conteúdo principal */
+}
+
+/* Ajustes para o main quando content-wrapper é usado */
+.content-wrapper > main {
+  flex-grow: 1; /* Faz o main ocupar o espaço restante */
+  overflow-y: auto; /* Permite scroll no main se o conteúdo exceder */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ajustes para MotionPage dentro do content-wrapper */
+.content-wrapper > main > div[initial="initial"] { /* Seletor para o MotionPage */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Remove scrollbar do body quando content-wrapper está ativo */
+html.has-content-wrapper, body.has-content-wrapper {
+  overflow: hidden;
+}
+
+/* Adiciona classe ao html/body via JS quando header/footer estão visíveis */
+/* Exemplo em App.jsx:
+  useEffect(() => {
+    if (showHeaderAndFooter) {
+      document.documentElement.classList.add('has-content-wrapper');
+      document.body.classList.add('has-content-wrapper');
+    } else {
+      document.documentElement.classList.remove('has-content-wrapper');
+      document.body.classList.remove('has-content-wrapper');
+    }
+  }, [showHeaderAndFooter]);
+*/
+
+/* Estilos para cards com aparência de banner */
+.banner-card {
+  @apply w-full aspect-[16/3] sm:aspect-[16/2.5] md:aspect-[16/2] rounded-lg overflow-hidden shadow-lg bg-card flex flex-col;
+}
+.banner-card-header {
+  @apply p-3 sm:p-4 bg-primary/10 text-primary;
+}
+.banner-card-content {
+  @apply p-3 sm:p-4 flex-grow;
+}
+
+/* Estilos para inputs e botões com melhor feedback visual */
+input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="tel"], textarea, select {
+  @apply focus:ring-2 focus:ring-primary/50 focus:border-primary transition-shadow duration-200;
+}
+
+button {
+  @apply transition-all duration-150 ease-in-out;
+}
+
+/* Typography adjustments */
+h1, .h1 { @apply text-3xl sm:text-4xl font-bold tracking-tight text-foreground; }
+h2, .h2 { @apply text-2xl sm:text-3xl font-semibold tracking-tight text-foreground; }
+h3, .h3 { @apply text-xl sm:text-2xl font-semibold text-foreground; }
+h4, .h4 { @apply text-lg sm:text-xl font-medium text-foreground; }
+p, .p { @apply text-base text-muted-foreground; }
+small, .small { @apply text-sm text-muted-foreground; }
